@@ -1,9 +1,5 @@
 # Deploy a People Counter App at the Edge
 
-| Details            |              |
-|-----------------------|---------------|
-| Programming Language: |  Python 3.5 or 3.6 |
-
 ![people-counter-python](./images/people-counter-image.png)
 
 ## What it Does
@@ -12,13 +8,41 @@ The people counter application will demonstrate how to create a smart video IoT 
 
 ## How it Works
 
-The counter will use the Inference Engine included in the Intel® Distribution of OpenVINO™ Toolkit. The model used should be able to identify people in a video frame. The app should count the number of people in the current frame, the duration that a person is in the frame (time elapsed between entering and exiting a frame) and the total count of people. It then sends the data to a local web server using the Paho MQTT Python package.
+The counter uses the Inference Engine included in the Intel® Distribution of OpenVINO™ Toolkit. Using the model, the app identifies and counts number of people in a video frame, as well as the duration they were captured for(time elapsed between entering and exiting a frame) and the total count of people. It then sends the data to a local web server using the Paho MQTT Python package.
 
-You will choose a model to use and convert it with the Model Optimizer.
 
 ![architectural diagram](./images/arch_diagram.png)
 
+## COCO-trained Model used
+
+| Model name  | Speed (ms) | COCO mAP[^1] | Outputs |
+| ------------ | :--------------: | :--------------: | :-------------: |
+| [ssd_mobilenet_v2_coco](http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v2_coco_2018_03_29.tar.gz) | 31 | 22 | Boxes |
+
+The Model Optimizer helps convert models in multiple different frameworks to an Intermediate Representation, which is used with the Inference Engine. If a model is not one of the pre-converted models in the Pre-Trained Models OpenVINO™ provides, it is a required step to move onto the Inference Engine.
+
+As part of the process, it can perform various optimizations that can help shrink the model size and help make it faster, although this will not give the model higher inference accuracy. In fact, there will be some loss of accuracy as a result of potential changes like lower precision. However, these losses in accuracy are minimized.
+
+
+#### Model Optimizer's three optimization techniques:
+* Quantization
+  * Quantization is the process of reducing the precision of a model
+  * Going from FP32 to FP16
+* Freezing
+  * Freezing in this context is used for TensorFlow models.
+  * Freezing TensorFlow models removes certain ops and metadata needed for training purposes
+* Fusion
+  * Combines certain ops together into one operation
+  * Results in less computational overhead
+
+
+
+
 ## Requirements
+
+| Details            |              |
+|-----------------------|---------------|
+| Programming Language: |  Python 3.5 or 3.6 |
 
 ### Hardware
 
