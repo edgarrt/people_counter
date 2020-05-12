@@ -1,0 +1,4 @@
+model/faster_rcnn_inception_resnet_v2_atrous_oid_2018_01_28/*
+model/ssd_mobilenet_v2_coco_2018_03_29/*
+
+__pycache__
